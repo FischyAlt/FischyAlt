@@ -1,0 +1,83 @@
+-- Create the ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ExternalExecutorGui"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create the main frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 400, 0, 250)
+mainFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
+mainFrame.BackgroundColor3 = Color3.fromRGB(128, 128, 128)  -- Grey color
+mainFrame.Parent = ScreenGui
+
+-- Make the frame draggable
+local dragToggle = nil
+local dragStart = nil
+local startPos = nil
+
+mainFrame.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragToggle = true
+        dragStart = input.Position
+        startPos = mainFrame.Position
+    end
+end)
+
+mainFrame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragToggle = false
+    end
+end)
+
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragToggle then
+        local delta = input.Position - dragStart
+        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Create the header text label
+local headerLabel = Instance.new("TextLabel")
+headerLabel.Size = UDim2.new(1, 0, 0, 40)
+headerLabel.Position = UDim2.new(0, 0, 0, 0)
+headerLabel.BackgroundTransparency = 1
+headerLabel.Text = "External Executor by FischyALT"
+headerLabel.TextSize = 18
+headerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+headerLabel.TextAlign = Enum.TextAlign.Center
+headerLabel.Parent = mainFrame
+
+-- Create the text box
+local textBox = Instance.new("TextBox")
+textBox.Size = UDim2.new(0, 350, 0, 50)
+textBox.Position = UDim2.new(0, 25, 0, 50)
+textBox.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+textBox.ClearTextOnFocus = false
+textBox.Text = ""
+textBox.TextSize = 18
+textBox.Parent = mainFrame
+
+-- Create the 'Clear' button
+local clearButton = Instance.new("TextButton")
+clearButton.Size = UDim2.new(0, 150, 0, 40)
+clearButton.Position = UDim2.new(0, 25, 0, 120)
+clearButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+clearButton.Text = "Clear"
+clearButton.TextSize = 18
+clearButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+clearButton.Parent = mainFrame
+
+clearButton.MouseButton1Click:Connect(function()
+    textBox.Text = ""  -- Clears the text in the text box
+end)
+
+-- Create the 'Execute' button
+local executeButton = Instance.new("TextButton")
+executeButton.Size = UDim2.new(0, 150, 0, 40)
+executeButton.Position = UDim2.new(0, 200, 0, 120)
+executeButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+executeButton.Text = "Execute"
+executeButton.TextSize = 18
+executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+executeButton.Parent 
